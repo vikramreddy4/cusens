@@ -1,4 +1,4 @@
-package com.rover;
+package com.pce;
 
 
 import org.springframework.boot.SpringApplication;
@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
  
-@SpringBootApplication(scanBasePackages={"com.rover"})// same as @Configuration @EnableAutoConfiguration @ComponentScan
+@SpringBootApplication(scanBasePackages={"com.pce"})// same as @Configuration @EnableAutoConfiguration @ComponentScan
 public class SpringBootStandAloneWarApp extends SpringBootServletInitializer{
      
     @Override
