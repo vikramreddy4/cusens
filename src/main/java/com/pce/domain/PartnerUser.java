@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="partner_user")
 public class PartnerUser implements Serializable {
@@ -27,6 +29,7 @@ public class PartnerUser implements Serializable {
     @Column(nullable = false, length=15)
     private String phone;
     
+    @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL)
     private Partner partner;
 
@@ -39,9 +42,11 @@ public class PartnerUser implements Serializable {
     @Column
     private boolean notificationsOptIn;
     
+    @JsonIgnore
     @Column(updatable = false, nullable = false)
     private Calendar createdDate;
     
+    @JsonIgnore
     @Column
     private Calendar updatedDate;
 

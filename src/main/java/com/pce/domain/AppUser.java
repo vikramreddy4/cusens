@@ -11,6 +11,8 @@ import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="app_user",
 	indexes = {
@@ -36,12 +38,15 @@ public class AppUser implements Serializable {
     @Column(nullable = false)
     private boolean disabled;
     
+    @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL)
     private Partner partner;
     
+    @JsonIgnore
     @Column(updatable = false, nullable = false)
     private Calendar createdDate;
 
+    @JsonIgnore
     @Column
     private Calendar updatedDate;
 

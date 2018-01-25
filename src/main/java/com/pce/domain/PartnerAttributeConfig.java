@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="partner_attribute_config",
 	uniqueConstraints = {@UniqueConstraint(columnNames={"partner_code", "attributeName"})},
@@ -22,10 +24,12 @@ import javax.persistence.UniqueConstraint;
 	}
 )
 public class PartnerAttributeConfig implements Serializable {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
+    @JsonIgnore
     @ManyToOne(cascade=CascadeType.ALL)
     private Partner partner;
     
@@ -38,9 +42,11 @@ public class PartnerAttributeConfig implements Serializable {
     @Column(nullable = false)
     private boolean segment;
     
+    @JsonIgnore
     @Column(updatable = false, nullable = false)
     private Calendar createdDate;
 
+    @JsonIgnore
     @Column
     private Calendar updatedDate;
 
