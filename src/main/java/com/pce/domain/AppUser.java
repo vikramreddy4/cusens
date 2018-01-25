@@ -6,35 +6,29 @@ import java.util.Calendar;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="app_user",
-	uniqueConstraints = {@UniqueConstraint(columnNames={"email"})},
 	indexes = {
 			@Index(name = "idx_app_user_email", columnList = "email"),
 			@Index(name = "idx_app_user_disabled", columnList = "disabled")
 	}
 )
 public class AppUser implements Serializable {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+
+	@Id
+	@Column(nullable = false, length=15)
+    private String email;
     
     @Column(nullable = false, length=50)
     private String name;
     
     @Column(updatable = false, nullable = false, length=50)
     private String privilege;
-    
-    @Column(nullable = false, length=15)
-    private String email;
     
     @Column(nullable = false, length=15)
     private String password;
@@ -58,7 +52,6 @@ public class AppUser implements Serializable {
 	public AppUser(Long id, String name, String privilege, String email, String password, boolean disabled,
 			Calendar createdDate, Calendar updatedDate) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.privilege = privilege;
 		this.email = email;
@@ -66,14 +59,6 @@ public class AppUser implements Serializable {
 		this.disabled = disabled;
     	this.createdDate = Calendar.getInstance();
     	this.updatedDate = Calendar.getInstance();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -142,7 +127,7 @@ public class AppUser implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AppUser [" + (id != null ? "id=" + id + ", " : "") + (name != null ? "name=" + name + ", " : "")
+		return "AppUser [" + (name != null ? "name=" + name + ", " : "")
 				+ (privilege != null ? "privilege=" + privilege + ", " : "")
 				+ (email != null ? "email=" + email + ", " : "")
 				+ (password != null ? "password=" + password + ", " : "") + "disabled=" + disabled + ", "

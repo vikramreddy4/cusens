@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="partner_attribute_config",
+	uniqueConstraints = {@UniqueConstraint(columnNames={"partner_code", "attributeName"})},
 	indexes = {
 			@Index(name = "idx_ptr_attr_cfg_attrName", columnList = "attributeName")
 	}

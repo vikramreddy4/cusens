@@ -14,19 +14,15 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="partner_user",
-	uniqueConstraints = {@UniqueConstraint(columnNames={"email"})}
-)
+@Table(name="partner_user")
 public class PartnerUser implements Serializable {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+
+	@Id
+    @Column(updatable = false, nullable = false, length=50)
+    private String email;
     
     @Column(nullable = false, length=50)
     private String name;
-    
-    @Column(updatable = false, nullable = false, length=50)
-    private String email;
     
     @Column(nullable = false, length=15)
     private String phone;
@@ -64,14 +60,6 @@ public class PartnerUser implements Serializable {
 		this.notificationsOptIn = notificationsOptIn;
     	this.createdDate = Calendar.getInstance();
     	this.updatedDate = Calendar.getInstance();
-	}
-
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -154,7 +142,7 @@ public class PartnerUser implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PartnerUser [" + (id != null ? "id=" + id + ", " : "") + (name != null ? "name=" + name + ", " : "")
+		return "PartnerUser [" + (name != null ? "name=" + name + ", " : "")
 				+ (email != null ? "email=" + email + ", " : "") + (phone != null ? "phone=" + phone + ", " : "")
 				+ (partner != null ? "partner=" + partner + ", " : "") + "emailOptIn=" + emailOptIn + ", phoneOptIn="
 				+ phoneOptIn + ", notificationsOptIn=" + notificationsOptIn + ", "
