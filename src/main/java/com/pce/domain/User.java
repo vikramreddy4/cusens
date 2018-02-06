@@ -16,17 +16,30 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="partner_user")
-public class PartnerUser implements Serializable {
+@Table(name="user"
+//,
+//	uniqueConstraints = {
+//		@UniqueConstraint(columnNames={"partner_code","external_id"}),
+//		@UniqueConstraint(columnNames={"partner_code","email"}),
+//		@UniqueConstraint(columnNames={"partner_code","phone"})
+//	}
+)
+public class User implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+	
     @Column(updatable = false, nullable = false, length=50)
+    private String externalId;
+
+    @Column(length=50)
     private String email;
     
-    @Column(nullable = false, length=50)
+    @Column(length=50)
     private String name;
     
-    @Column(nullable = false, length=15)
+    @Column(length=15)
     private String phone;
     
     @JsonIgnore
@@ -50,11 +63,11 @@ public class PartnerUser implements Serializable {
     @Column
     private Calendar updatedDate;
 
-    public PartnerUser() {
+    public User() {
     	
     }
     
-    public PartnerUser(String name, String email, String phone, boolean emailOptIn, boolean phoneOptIn,
+    public User(String name, String email, String phone, boolean emailOptIn, boolean phoneOptIn,
 			boolean notificationsOptIn) {
 		super();
 		this.name = name;
@@ -145,13 +158,30 @@ public class PartnerUser implements Serializable {
 		this.partner = partner;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "PartnerUser [" + (name != null ? "name=" + name + ", " : "")
-				+ (email != null ? "email=" + email + ", " : "") + (phone != null ? "phone=" + phone + ", " : "")
-				+ (partner != null ? "partner=" + partner + ", " : "") + "emailOptIn=" + emailOptIn + ", phoneOptIn="
-				+ phoneOptIn + ", notificationsOptIn=" + notificationsOptIn + ", "
-				+ (createdDate != null ? "createdDate=" + createdDate + ", " : "")
+		return "User [" + (id != null ? "id=" + id + ", " : "")
+				+ (externalId != null ? "externalId=" + externalId + ", " : "")
+				+ (email != null ? "email=" + email + ", " : "") + (name != null ? "name=" + name + ", " : "")
+				+ (phone != null ? "phone=" + phone + ", " : "") + (partner != null ? "partner=" + partner + ", " : "")
+				+ "emailOptIn=" + emailOptIn + ", phoneOptIn=" + phoneOptIn + ", notificationsOptIn="
+				+ notificationsOptIn + ", " + (createdDate != null ? "createdDate=" + createdDate + ", " : "")
 				+ (updatedDate != null ? "updatedDate=" + updatedDate : "") + "]";
 	}
 

@@ -42,7 +42,7 @@ public class AppUserController {
 		ResponseEntity<?> validateOuput = validate(appUser);
 		if(validateOuput == null) {
 			repository.save(appUser);
-			return new ResponseEntity<String>(String.format("User (%s) successfully created !!!", appUser.getEmail()), HttpStatus.CREATED);
+			return new ResponseEntity<String>(String.format("AppUser (%s) successfully created !!!", appUser.getEmail()), HttpStatus.CREATED);
 		}
 		return validateOuput;
 	}
@@ -53,10 +53,10 @@ public class AppUserController {
 		if(validateOuput == null) {
 			List<AppUser> existingAppUsers = repository.findByEmailAndPartnerCode(appUser.getEmail(), appUser.getPartner().getCode());
 			if(existingAppUsers == null || existingAppUsers.isEmpty()) {
-				return new ResponseEntity<String>(String.format("No User found email : %s",appUser.getEmail()), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>(String.format("No AppUser found email : %s",appUser.getEmail()), HttpStatus.BAD_REQUEST);
 			}
 			repository.save(appUser);
-			return new ResponseEntity<String>(String.format("User (%s) successfully updated !!!", appUser.getEmail()), HttpStatus.OK);
+			return new ResponseEntity<String>(String.format("AppUser (%s) successfully updated !!!", appUser.getEmail()), HttpStatus.OK);
 		}
 		return validateOuput;
 	}
@@ -67,11 +67,11 @@ public class AppUserController {
 			return new ResponseEntity<String>("Invalid Partner", HttpStatus.BAD_REQUEST);
 		}
 		if(StringUtils.isEmpty(email)) {
-			return new ResponseEntity<String>("Invalid User email", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Invalid AppUser email", HttpStatus.BAD_REQUEST);
 		}
 		List<AppUser> existingAppUsers = repository.findByEmailAndPartnerCode(email, partner);
 		if(existingAppUsers == null || existingAppUsers.isEmpty()) {
-			return new ResponseEntity<String>(String.format("No User found with email : %s",email), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(String.format("No AppUser found with email : %s",email), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<AppUser>(existingAppUsers.get(0), HttpStatus.OK);
 	}

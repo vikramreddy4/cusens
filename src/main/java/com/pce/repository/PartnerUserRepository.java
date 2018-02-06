@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pce.domain.Partner;
-import com.pce.domain.PartnerUser;
+import com.pce.domain.User;
 
 @Repository
-public interface PartnerUserRepository extends CrudRepository<PartnerUser, String> {
+public interface PartnerUserRepository extends CrudRepository<User, String> {
 	
-	List<PartnerUser> findByPartnerCode(String partnerCode);
-	List<PartnerUser> findByEmailAndPartnerCode(String email, String partnerCode);
+	List<User> findByPartnerCode(String partnerCode);
+	List<User> findByEmailAndPartnerCode(String email, String partnerCode);
 
 }

@@ -8,29 +8,36 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="partner_attribute_config"
-//,
-//	uniqueConstraints = {@UniqueConstraint(columnNames={"partner_code", "attributeName"})},
-//	indexes = {
-//			@Index(name = "idx_ptr_attr_cfg_attrName", columnList = "attributeName")
-//	}
+@Table(name="user_attribute",
+//	uniqueConstraints = {@UniqueConstraint(columnNames={"partner_code", "attribute_name"})},
+	indexes = {
+			@Index(name = "idx_ptr_attr_cfg_attrName", columnList = "attributeName")
+	}
 )
-@IdClass(PartnerAttributeConfigPK.class)
-public class PartnerAttributeConfig implements Serializable {
-	@Id
-	private Partner partner;
+@IdClass(UserAttributePK.class)
+public class UserAttribute implements Serializable {
+    @JsonIgnore
+    @Id
+    private Partner partner;
     
-	@Id
+    @JsonIgnore
+    @Id
+    private User user;
+
+    @Id
     private String attributeName;
-	
+    
     @Column(nullable = false, length=15)
     private String attributeType;
     
@@ -45,20 +52,35 @@ public class PartnerAttributeConfig implements Serializable {
     @Column
     private Calendar updatedDate;
 
-    public PartnerAttributeConfig() {
+    public UserAttribute() {
     	
     }
 
-	public PartnerAttributeConfig(Long id, Partner partner, String attributeName, String attributeType,
+	public UserAttribute(Partner partner, String attributeName, String attributeType,
 			boolean segment, Calendar createdDate, Calendar updatedDate) {
 		super();
-//		this.id = id;
-//		this.partner = partner;
-//		this.attributeName = attributeName;
+		this.partner = partner;
+		this.attributeName = attributeName;
 		this.attributeType = attributeType;
 		this.segment = segment;
     	this.createdDate = Calendar.getInstance();
     	this.updatedDate = Calendar.getInstance();
+	}
+
+	public Partner getPartner() {
+		return partner;
+	}
+
+	public void setPartner(Partner partner) {
+		this.partner = partner;
+	}
+
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
 	}
 
 	public String getAttributeType() {
@@ -93,30 +115,26 @@ public class PartnerAttributeConfig implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 
-	public String getAttributeName() {
-		return attributeName;
+	@Override
+	public String toString() {
+		return "PartnerAttributeConfig [" + (partner != null ? "partner=" + partner + ", " : "")
+				+ (attributeName != null ? "attributeName=" + attributeName + ", " : "")
+				+ (attributeType != null ? "attributeType=" + attributeType + ", " : "") + "segment=" + segment + ", "
+				+ (createdDate != null ? "createdDate=" + createdDate + ", " : "")
+				+ (updatedDate != null ? "updatedDate=" + updatedDate : "") + "]";
 	}
-
-	public Partner getPartner() {
-		return partner;
-	}
-
-	public void setPartner(Partner partner) {
-		this.partner = partner;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
-
+    
 }
-
 @Embeddable
-class PartnerAttributeConfigPK implements Serializable {
+class UserAttributePK implements Serializable {
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Partner partner;
     
+    @JsonIgnore
+    @ManyToOne(cascade=CascadeType.ALL)
+    private User user;
+
     @Column(nullable = false, length=50, unique=true)
     private String attributeName;
 
@@ -132,6 +150,14 @@ class PartnerAttributeConfigPK implements Serializable {
 		return attributeName;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
@@ -139,14 +165,15 @@ class PartnerAttributeConfigPK implements Serializable {
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PartnerAttributeConfigPK)) return false;
-        PartnerAttributeConfigPK that = (PartnerAttributeConfigPK) o;
+        if (!(o instanceof UserAttributePK)) return false;
+        UserAttributePK that = (UserAttributePK) o;
         return Objects.equals(getPartner(), that.getPartner()) &&
-                Objects.equals(getAttributeName(), that.getAttributeName());
+                Objects.equals(getAttributeName(), that.getAttributeName()) &&
+                		Objects.equals(getUser(), that.getUser());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPartner(), getAttributeName());
+        return Objects.hash(getPartner(), getAttributeName(), getUser());
     }
 }

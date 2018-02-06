@@ -38,8 +38,17 @@ public class Partner implements Serializable {
     @JsonIgnore
     @Column(nullable = false)
     private boolean disabled;
+
+    @Column(nullable = false, length=50)
+    private String userName;
     
-    @JsonIgnore
+    @Column(nullable = false, length=50)
+    private String password;
+    
+    @Column(nullable = false, length=100)
+    private String role;
+    
+	@JsonIgnore
     @Column(updatable = false, nullable = false)
     private Calendar createdDate;
 
@@ -134,13 +143,50 @@ public class Partner implements Serializable {
 		this.disabled = disabled;
 	}
 
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String roles) {
+		this.role = roles;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
 	@Override
 	public String toString() {
 		return "Partner [" + (code != null ? "code=" + code + ", " : "")
 				+ (description != null ? "description=" + description + ", " : "")
 				+ (hashCode != null ? "hashCode=" + hashCode + ", " : "")
 				+ (phone != null ? "phone=" + phone + ", " : "") + (email != null ? "email=" + email + ", " : "")
-				+ "disabled=" + disabled + ", " + (createdDate != null ? "createdDate=" + createdDate + ", " : "")
+				+ "disabled=" + disabled + ", " + (userName != null ? "userName=" + userName + ", " : "")
+				+ (password != null ? "password=" + password + ", " : "")
+				+ (role != null ? "role=" + role + ", " : "")
+				+ (createdDate != null ? "createdDate=" + createdDate + ", " : "")
 				+ (updatedDate != null ? "updatedDate=" + updatedDate : "") + "]";
 	}
 

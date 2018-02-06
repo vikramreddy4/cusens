@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.pce.domain.PartnerUser;
+import com.pce.domain.User;
 import com.pce.repository.PartnerUserRepository;
 
 @Controller
-@RequestMapping(path = "/partnerUser")
-public class PartnerUserController {
+@RequestMapping(path = "/partnerUser/v1")
+public class UserController {
 
 	@Autowired
 	private PartnerUserRepository repository;
 
-	private ResponseEntity<?> validate(PartnerUser partnerUser) {
+	private ResponseEntity<?> validate(User partnerUser) {
 		if(partnerUser == null) {
 			return new ResponseEntity<String>("Empty request", HttpStatus.BAD_REQUEST);
 		}
@@ -38,25 +38,25 @@ public class PartnerUserController {
 	}
 	
 	@PostMapping(path = "/create")
-	public ResponseEntity<?> create(@RequestBody PartnerUser partnerUser) {
+	public ResponseEntity<?> create(@RequestBody User partnerUser) {
 		ResponseEntity<?> validateOuput = validate(partnerUser);
 		if(validateOuput == null) {
 			repository.save(partnerUser);
-			return new ResponseEntity<String>(String.format("User (%s) successfully created !!!", partnerUser.getEmail()), HttpStatus.CREATED);
+			return new ResponseEntity<String>(String.format("AppUser (%s) successfully created !!!", partnerUser.getEmail()), HttpStatus.CREATED);
 		}
 		return validateOuput;
 	}
 	
 	@PutMapping(path = "/update")
-	public ResponseEntity<?> update(@RequestBody PartnerUser partnerUser) {
+	public ResponseEntity<?> update(@RequestBody User partnerUser) {
 		ResponseEntity<?> validateOuput = validate(partnerUser);
 		if(validateOuput == null) {
-			List<PartnerUser> existingPartnerUsers = repository.findByEmailAndPartnerCode(partnerUser.getEmail(), partnerUser.getPartner().getCode());
+			List<User> existingPartnerUsers = repository.findByEmailAndPartnerCode(partnerUser.getEmail(), partnerUser.getPartner().getCode());
 			if(existingPartnerUsers == null || existingPartnerUsers.isEmpty()) {
-				return new ResponseEntity<String>(String.format("No User found email : %s",partnerUser.getEmail()), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>(String.format("No AppUser found email : %s",partnerUser.getEmail()), HttpStatus.BAD_REQUEST);
 			}
 			repository.save(partnerUser);
-			return new ResponseEntity<String>(String.format("User (%s) successfully updated !!!", partnerUser.getEmail()), HttpStatus.OK);
+			return new ResponseEntity<String>(String.format("AppUser (%s) successfully updated !!!", partnerUser.getEmail()), HttpStatus.OK);
 		}
 		return validateOuput;
 	}
@@ -67,13 +67,13 @@ public class PartnerUserController {
 			return new ResponseEntity<String>("Invalid Partner", HttpStatus.BAD_REQUEST);
 		}
 		if(StringUtils.isEmpty(email)) {
-			return new ResponseEntity<String>("Invalid User email", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Invalid AppUser email", HttpStatus.BAD_REQUEST);
 		}
-		List<PartnerUser> existingPartnerUsers = repository.findByEmailAndPartnerCode(email, partner);
+		List<User> existingPartnerUsers = repository.findByEmailAndPartnerCode(email, partner);
 		if(existingPartnerUsers == null || existingPartnerUsers.isEmpty()) {
-			return new ResponseEntity<String>(String.format("No User found with email : %s",email), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(String.format("No AppUser found with email : %s",email), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<PartnerUser>(existingPartnerUsers.get(0), HttpStatus.OK);
+		return new ResponseEntity<User>(existingPartnerUsers.get(0), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "partner/{partner}/all")
@@ -81,10 +81,10 @@ public class PartnerUserController {
 		if(StringUtils.isEmpty(partner)) {
 			return new ResponseEntity<String>("Invalid Partner", HttpStatus.BAD_REQUEST);
 		}
-		Iterable<PartnerUser> partnerUsers = repository.findByPartnerCode(partner);
+		Iterable<User> partnerUsers = repository.findByPartnerCode(partner);
 		if(partnerUsers == null) {
 			return new ResponseEntity<String>("No Users found", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Iterable<PartnerUser>>(partnerUsers, HttpStatus.OK);
+		return new ResponseEntity<Iterable<User>>(partnerUsers, HttpStatus.OK);
 	}
 }

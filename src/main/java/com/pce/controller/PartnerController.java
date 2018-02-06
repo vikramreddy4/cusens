@@ -3,6 +3,7 @@ package com.pce.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import com.pce.domain.Partner;
 import com.pce.repository.PartnerRepository;
 
 @Controller
-@RequestMapping(path = "/partner")
+@RequestMapping(path = "/partner/v1")
 public class PartnerController {
 
 	@Autowired
@@ -36,6 +37,7 @@ public class PartnerController {
 	}
 	
 	@PostMapping(path = "/create")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> create(@RequestBody Partner partner) {
 		ResponseEntity<?> validateOuput = validate(partner);
 		if(validateOuput == null) {
@@ -46,6 +48,7 @@ public class PartnerController {
 	}
 	
 	@PutMapping(path = "/update")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> update(@RequestBody Partner partner) {
 		ResponseEntity<?> validateOuput = validate(partner);
 		if(validateOuput == null) {
@@ -60,6 +63,7 @@ public class PartnerController {
 	}
 
 	@GetMapping(path = "/{code}")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> search(@PathVariable String code) {
 		if(StringUtils.isEmpty(code)) {
 			return new ResponseEntity<String>("Invalid Partner code", HttpStatus.BAD_REQUEST);
@@ -72,6 +76,7 @@ public class PartnerController {
 	}
 
 	@GetMapping(path = "/all")
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<?> getAll() {
 		Iterable<Partner> partners = repository.findAll();
 		if(partners == null) {

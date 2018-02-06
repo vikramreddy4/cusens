@@ -3,3 +3,6 @@ mysql -u root -ptest
 mvn clean install -P remote
 java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -jar target/cusens.war
 
+insert into partner(code,description,hash_code,user_name,password, role, created_date,updated_date) values('testAdmin1','Test Admin','xxxxyyyyA1','admin','password','ROLE_ADMIN','2018-02-03','2018-02-03');
+insert into partner(code,description,hash_code,user_name,password, role, created_date,updated_date) values('test1','Test','xxxxyyyy1','user1','password1','ROLE_USER','2018-02-03','2018-02-03');
+insert into partner(code,description,hash_code,user_name,password, role, created_date,updated_date) values('test2','Test','xxxxyyyy2','user2','password2','ROLE_USER','2018-02-03','2018-02-03');

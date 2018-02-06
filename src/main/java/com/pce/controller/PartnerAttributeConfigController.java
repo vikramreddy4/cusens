@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.pce.domain.PartnerAttributeConfig;
 import com.pce.repository.PartnerAttributeConfigRepository;
 
+
 @Controller
 @RequestMapping(path = "/partnerAttrConfig")
 public class PartnerAttributeConfigController {
